@@ -30,9 +30,9 @@ object SupplyStacks {
 
   def getCratesFromTopOfStacksAfterInstructionApplied(rawData: List[String], model:String = "9000"):String =
     val (stacks, instructions) = parse(rawData)
-    instructions.foldLeft(stacks) { (acc, n) => model match
-      case "9000" => acc.move(n)
-      case "9001" => acc.move(n, "9001")
+    instructions.foldLeft(stacks) { (stacksAcc, instruction) => model match
+      case "9000" => stacksAcc.move(instruction)
+      case "9001" => stacksAcc.move(instruction, "9001")
     }.getTop.mkString("")
 
   def parse(raw: List[String]) =
