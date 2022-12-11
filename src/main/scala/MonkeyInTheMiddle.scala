@@ -38,13 +38,12 @@ object MonkeyInTheMiddle:
           throwItems(newFrom, monkeys.updated(from.monkeyName, newFrom).updated(newTo.monkeyName, newTo), f)
 
   def calculateMonkeyBusinessFor20Rounds(rawMonkeys: List[String]) =
-    val monkeys = buildMonkeys(rawMonkeys)
-    calculateMonkeyBusiness(monkeys, 20, v => v / 3)
+    calculateMonkeyBusiness(buildMonkeys(rawMonkeys), 20, v => v / 3)
 
   def calculateMonkeyBusinessFor1000Rounds(rawMonkeys: List[String]) =
-    val monkeys = rawMonkeys.filter(_ != "").grouped(6).map(Monkey(_)).map(m => (m.monkeyName, m)).toMap
+    val monkeys = buildMonkeys(rawMonkeys)
     val testValueMultiple = monkeys.foldLeft(1L)((acc, m) => acc * m._2.testValue)
-    calculateMonkeyBusiness(monkeys, 10000, v => v % testValueMultiple)
+    calculateMonkeyBusiness(buildMonkeys(rawMonkeys), 10000, v => v % testValueMultiple)
 
   private def buildMonkeys(rawMonkeys: List[String]) =
     rawMonkeys.filter(_ != "").grouped(6).map(Monkey(_)).map(m => (m.monkeyName, m)).toMap
