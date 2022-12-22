@@ -34,7 +34,7 @@ object HillClimbingAlgorithm:
     val startPosition = grid.getPositionFor("S")
     val endPosition = grid.getPositionFor("E")
     val queue = mutable.Queue[List[(Int, Int)]](List(startPosition.getOrElse(0,0)))
-    val len = findEndFrom2(endPosition.getOrElse(0,0), grid, queue, Set())
+    val len = findEndFrom(endPosition.getOrElse(0,0), grid, queue, Set())
     len.length - 1
 
   def getFewerStepsPathForAnyStartingPointAFor(rawGrid: List[String]) =
@@ -44,12 +44,11 @@ object HillClimbingAlgorithm:
     val endPosition = grid.getPositionFor("E")
     val res = aStartingPoints.map{p =>
       queue.clear()
-      findEndFrom2(endPosition.get, grid, queue.addOne(List(p)), Set()).length - 1}.filter(_ != -1)
+      findEndFrom(endPosition.get, grid, queue.addOne(List(p)), Set()).length - 1}.filter(_ != -1)
     res.min
 
-
   @tailrec
-  private def findEndFrom2(endPosition: (Int, Int), grid: Grid, queue: mutable.Queue[List[(Int,Int)]], visited: Set[(Int,Int)]): List[(Int,Int)] =
+  private def findEndFrom(endPosition: (Int, Int), grid: Grid, queue: mutable.Queue[List[(Int,Int)]], visited: Set[(Int,Int)]): List[(Int,Int)] =
     if queue.isEmpty then
       List()
     else
@@ -65,6 +64,6 @@ object HillClimbingAlgorithm:
             pt +: path
           }
         queue.enqueueAll(nextCandidates)
-        findEndFrom2(endPosition, grid, queue, visited + point)
+        findEndFrom(endPosition, grid, queue, visited + point)
       else
-        findEndFrom2(endPosition, grid, queue, visited)
+        findEndFrom(endPosition, grid, queue, visited)
